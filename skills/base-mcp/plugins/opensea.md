@@ -18,6 +18,9 @@ risk: [slippage, irreversible]
 # OpenSea Plugin
 
 > [!IMPORTANT]
+> Complete the short Base MCP onboarding flow defined in `SKILL.md` before calling any OpenSea endpoint. The user's wallet address — passed to `send_calls` — is fetched lazily when needed via `get_wallets`.
+
+> [!IMPORTANT]
 > **Before using any OpenSea tool, create an API key.** All OpenSea API endpoints require authentication. See `## Auth` below — one POST request gives your agent instant access.
 
 ## Overview
@@ -501,7 +504,7 @@ Buy an NFT on Ethereum using USDC from Base
 | Optimism | `optimism` | 10 |
 | Avalanche | `avalanche` | 43114 |
 
-Note: OpenSea API uses `matic` for Polygon; Base MCP uses `polygon`. Map accordingly when constructing `send_calls`.
+The OpenSea API and Base MCP both use `polygon` as the chain identifier for Polygon.
 
 ### Constants
 
