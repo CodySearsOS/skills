@@ -309,13 +309,13 @@ elif "transactions" in raw:
 else:
     txs = [raw]
 def hex_value(v):
-    if v is None:
+    if v is None or v == "" or v == 0:
         return "0x0"
     if isinstance(v, str) and v.startswith("0x"):
         return v
     return hex(int(v))
 print(json.dumps([
-    {"to": t["to"], "data": t.get("data") or "0x", "value": hex_value(t.get("value", 0))}
+    {"to": t.get("to", ""), "data": t.get("data") or "0x", "value": hex_value(t.get("value"))}
     for t in txs
 ], indent=2))'
 ```
