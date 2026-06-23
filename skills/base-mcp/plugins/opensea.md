@@ -293,7 +293,7 @@ curl -s -X POST "https://api.opensea.io/api/v2/offers/fulfillment_data" \
 > [!IMPORTANT]
 > The OpenSea API returns `value` as a **decimal string** in swap and cross-chain fulfillment responses (e.g. `"20000000000000000"`). The `send_calls` tool expects `value` as a **hex string** (e.g. `"0x470de4df820000"`). You **must** convert every `value` field to a `0x`-prefixed hex string before passing it to `send_calls`.
 >
-> **Do NOT compute this conversion mentally.** LLMs frequently get large-number hex conversions wrong (e.g. converting `4600000000000` to `0x42E52B800` instead of the correct `0x42F055DB000`), which causes transactions to revert with `InsufficientNativeTokensSupplied`. Use a code execution tool or shell command if available. If not, perform the conversion carefully and **always verify**: `parseInt(hexValue, 16)` must equal the original decimal number. If it does not match, redo the conversion.
+> **Do NOT compute this conversion mentally.** LLMs frequently get large-number hex conversions wrong (e.g. converting `4600000000000` to `0x42E52B800` instead of the correct `0x42F055DB000`), which causes transactions to revert with `InsufficientNativeTokensSupplied`. Use a code execution tool or shell command if available. If neither is available, use the reference conversion table below to look up common values.
 >
 > Exception: The mint endpoint (`/drops/{slug}/mint`) returns `value` already as a hex string. No conversion needed for mint.
 
@@ -316,15 +316,16 @@ In Python: `hex(20000000000000000)` outputs `"0x470de4df820000"`
 
 ### Reference conversions
 
-| Decimal | Hex | Verify: parseInt(hex, 16) |
-|---------|-----|---------------------------|
-| `"0"` | `"0x0"` | 0 |
-| `"1000000000000000"` | `"0x38d7ea4c68000"` | 1000000000000000 |
-| `"20000000000000000"` | `"0x470de4df820000"` | 20000000000000000 |
-| `"4600000000000"` | `"0x42f055db000"` | 4600000000000 |
-| `"1000000000000000000"` | `"0xde0b6b3a7640000"` | 1000000000000000000 |
-
-After every conversion, verify: `parseInt("<your hex>", 16)` must equal the original decimal. If it does not match, the conversion is wrong -- redo it.
+| Decimal | Hex | ETH equivalent |
+|---------|-----|----------------|
+| `"0"` | `"0x0"` | 0 ETH |
+| `"1000000000000"` | `"0xe8d4a51000"` | 0.000001 ETH |
+| `"1000000000000000"` | `"0x38d7ea4c68000"` | 0.001 ETH |
+| `"4600000000000"` | `"0x42f055db000"` | 0.0000046 ETH |
+| `"10000000000000000"` | `"0x2386f26fc10000"` | 0.01 ETH |
+| `"20000000000000000"` | `"0x470de4df820000"` | 0.02 ETH |
+| `"100000000000000000"` | `"0x16345785d8a0000"` | 0.1 ETH |
+| `"1000000000000000000"` | `"0xde0b6b3a7640000"` | 1 ETH |
 
 ## Orchestration
 
